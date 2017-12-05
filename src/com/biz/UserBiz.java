@@ -1,7 +1,17 @@
 package com.biz;
 
-public interface UserBiz {
-	public boolean userLogin(String userAccount,String userPwd);
+import java.util.ArrayList;
 
-	public boolean check(String inputAccount, String inputPwd1, String inputPwdTips);
+import com.bean.DVD;
+import com.bean.User;
+
+public interface UserBiz {
+	User userLogin(String userAccount,String userPwd);
+
+	User check(String inputAccount, String inputPwd1, String inputPwdTips);
+
+	ArrayList<DVD> scanDVD();
+
+
+	boolean lendDVD(int lendDVDId, User nowUser);
 }

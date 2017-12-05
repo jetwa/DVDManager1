@@ -4,7 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
+import com.bean.DVD;
 import com.bean.User;
 import com.dao.UserDao;
 import com.tools.DBHelper;
@@ -73,6 +75,46 @@ public class UserDaoImpl implements UserDao {
 			return getUserByUserAccount(inputAccount);
 		}
 		return null;
+	}
+
+	@Override
+	public ArrayList<DVD> scanDVD() throws SQLException {
+		ArrayList<DVD> list = new ArrayList<>();
+		String sql = "select * from dvd_dvd";
+		mStatement = mConnection.prepareStatement(sql);
+		rSet = mStatement.executeQuery();
+		while (rSet.next()) {
+			DVD dvd = new DVD();
+			dvd.setDvdId(rSet.getInt("DVD_ID"));
+			dvd.setDvdName(rSet.getString("DVD_NAME"));
+			dvd.setDvdDate(rSet.getDate("DVD_DATE").toString());
+			dvd.setLendCount(rSet.getInt("DVD_LENDCOUNT"));
+			dvd.setDvdStatus(rSet.getInt("DVD_STATUS"));
+			list.add(dvd);
+		}
+		return list;
+	}
+
+	@Override
+	public boolean lendDVD(int lendDVDId, User nowUser) throws SQLException {
+		// 0表示在库,1表示借出,-1表示删除
+		String sql = "update dvd_dvd set dvd_status=1 ,dvd_lendcount=dvd_lendcount+1 where(dvd_id=? and dvd_status=0)";
+		mStatement = mConnection.prepareStatement(sql);
+		mStatement.setInt(1, lendDVDId);
+		rInt = mStatement.executeUpdate();
+		if (rInt > 0) {
+			sql = "insert into dvd_lr values(default,default,?,?,?,?,default,default,0)";
+			mStatement = mConnection.prepareStatement(sql);
+			mStatement.setInt(1, nowUser.getUserId());
+			mStatement.setString(2, nowUser.getUserAccount());
+			mStatement.setInt(3, lendDVDId);
+			mStatement.setString(4, "(select lendName from dvd_dvd where lendDVDId" + lendDVDId + ")");
+			rInt = mStatement.executeUpdate();
+			if (rInt > 0) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }
