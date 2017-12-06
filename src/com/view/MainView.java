@@ -23,18 +23,22 @@ public class MainView extends View {
 			choose = scan.nextInt();
 			switch (choose) {
 			case 0:
+				//退出
 				System.out.println("感谢您使用DVD管理系统,再见!");
 				isContinue = false;
 				break;
 			case 1:
+				//用户登录
 				View lv = new LoginView();
 				lv.showView();
 				break;
 			case 2:
+				//用户注册
 				View rv = new RegistView();
 				rv.showView();
 				break;
 			case 3:
+				//管理员登录
 				View alv = new AdminLoginView();
 				alv.showView();
 				break;

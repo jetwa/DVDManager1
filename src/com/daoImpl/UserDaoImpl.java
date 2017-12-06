@@ -23,14 +23,11 @@ public class UserDaoImpl implements UserDao {
 	public UserDaoImpl() {
 		mDB = new DBHelper();
 		mConnection = mDB.getConnection();
-		rSet = null;
-		u = null;
 	}
 
 	public UserDaoImpl(User u) {
 		mDB = new DBHelper();
 		mConnection = mDB.getConnection();
-		rSet = null;
 		this.u = u;
 	}
 
@@ -62,7 +59,7 @@ public class UserDaoImpl implements UserDao {
 			u.setUserPwd(rSet.getString("USER_PWD"));
 			u.setUserPwdTips(rSet.getString("USER_PWDTIPS"));
 			u.setUserStatus(rSet.getInt("USER_STATUS"));
-			System.out.println(u);
+			// System.out.println(u);
 		}
 		return u;
 	}

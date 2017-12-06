@@ -8,7 +8,16 @@ import com.bean.User;
 import com.biz.UserBiz;
 import com.dao.UserDao;
 import com.daoImpl.UserDaoImpl;
-
+/**
+ * 
+ * @project DVDManager1
+ * @package com.bizImpl
+ * @file UserBizImpl.java
+ * @author Jet
+ * @date 2017年12月6日
+ * @description 用户实现类
+ *
+ */
 public class UserBizImpl implements UserBiz {
 
 	private UserDao ud = null;
@@ -81,8 +90,7 @@ public class UserBizImpl implements UserBiz {
 			try {
 				return ud.lendDVD(lendDVDId, nowUser);
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				System.err.println("借出DVD异常");
 			}
 		}
 		return false;
@@ -94,8 +102,7 @@ public class UserBizImpl implements UserBiz {
 			try {
 				return ud.returnDVD(returnDVDId);
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				System.err.println("归还DVD异常");
 			}
 		}
 		return false;
