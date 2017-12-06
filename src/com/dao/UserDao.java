@@ -14,4 +14,6 @@ public interface UserDao {
 	ArrayList<DVD> scanDVD() throws SQLException;
 	
 	boolean lendDVD(int lendDVDId, User nowUser) throws SQLException;
+
+	boolean returnDVD(int returnDVDId) throws SQLException;
 }

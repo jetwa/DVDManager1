@@ -14,4 +14,6 @@ public interface UserBiz {
 
 
 	boolean lendDVD(int lendDVDId, User nowUser);
+
+	boolean returnDVD(int returnDVDId);
 }

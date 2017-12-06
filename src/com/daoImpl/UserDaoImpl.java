@@ -103,12 +103,30 @@ public class UserDaoImpl implements UserDao {
 		mStatement.setInt(1, lendDVDId);
 		rInt = mStatement.executeUpdate();
 		if (rInt > 0) {
-			sql = "insert into dvd_lr values(default,default,?,?,?,?,default,default,0)";
+			sql = "insert into dvd_lr values(default,default,?,?,?,(select dvd_name from dvd_dvd where dvd_id=?),default,default,0)";
 			mStatement = mConnection.prepareStatement(sql);
 			mStatement.setInt(1, nowUser.getUserId());
 			mStatement.setString(2, nowUser.getUserAccount());
 			mStatement.setInt(3, lendDVDId);
-			mStatement.setString(4, "(select lendName from dvd_dvd where lendDVDId" + lendDVDId + ")");
+			mStatement.setInt(4, lendDVDId);
+			rInt = mStatement.executeUpdate();
+			if (rInt > 0) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public boolean returnDVD(int returnDVDId) throws SQLException {
+		String sql = "update dvd_dvd set dvd_status=0 where (dvd_id=? and dvd_status=1)";
+		mStatement = mConnection.prepareStatement(sql);
+		mStatement.setInt(1, returnDVDId);
+		rInt = mStatement.executeUpdate();
+		if (rInt > 0) {
+			sql = "update dvd_lr set lr_status=1 where (dvd_id=? and lr_status=0)";
+			mStatement = mConnection.prepareStatement(sql);
+			mStatement.setInt(1, returnDVDId);
 			rInt = mStatement.executeUpdate();
 			if (rInt > 0) {
 				return true;

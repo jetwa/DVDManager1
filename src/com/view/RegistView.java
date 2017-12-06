@@ -21,7 +21,7 @@ public class RegistView extends View {
 
 		if (!inputPwd1.equals(inputPwd2)) {
 			System.out.println("两次输入的密码不一致,请重新注册.");
-			return null;
+			return null;                                           
 		}
 
 		UserBiz ub = new UserBizImpl();

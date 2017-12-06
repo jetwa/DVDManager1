@@ -45,12 +45,13 @@ public class UserBizImpl implements UserBiz {
 	}
 
 	@Override
-	public User check(String inputAccount, String inputPwd1,String inputPwdTips) {
-		if (inputAccount == null || inputPwd1 == null || inputAccount.length() == 0 || inputPwd1.length() == 0 || inputPwdTips==null || inputPwdTips.length()==0) {
+	public User check(String inputAccount, String inputPwd1, String inputPwdTips) {
+		if (inputAccount == null || inputPwd1 == null || inputAccount.length() == 0 || inputPwd1.length() == 0
+				|| inputPwdTips == null || inputPwdTips.length() == 0) {
 			return null;
 		}
 		try {
-			u = ud.registUser(inputAccount,inputPwd1,inputPwdTips);
+			u = ud.registUser(inputAccount, inputPwd1, inputPwdTips);
 			return u;
 		} catch (SQLException e) {
 			System.out.println("输入的信息不满足要求,请查看用户名及密码格式,非常抱歉.");
@@ -70,10 +71,23 @@ public class UserBizImpl implements UserBiz {
 	}
 
 	@Override
-	public boolean lendDVD(int lendDVDId,User nowUser) {
-		if (lendDVDId>0) {
+	public boolean lendDVD(int lendDVDId, User nowUser) {
+		if (lendDVDId > 0) {
 			try {
-				return ud.lendDVD(lendDVDId,nowUser);
+				return ud.lendDVD(lendDVDId, nowUser);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public boolean returnDVD(int returnDVDId) {
+		if (returnDVDId > 0) {
+			try {
+				return ud.returnDVD(returnDVDId);
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
