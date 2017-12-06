@@ -10,12 +10,11 @@ import com.bizImpl.UserBizImpl;
 public class UserMainView extends View {
 
 	private User u = null;
-
-	UserBiz ub = null;
+	private UserBiz ub = null;
 
 	public UserMainView(User u) {
 		this.u = u;
-		ub = new UserBizImpl();
+		ub = new UserBizImpl(u);
 	}
 
 	@Override

@@ -13,16 +13,25 @@ import com.tools.DBHelper;
 
 public class UserDaoImpl implements UserDao {
 
-	private Connection mConnection;
-	private PreparedStatement mStatement;
-	private ResultSet rSet;
-	private DBHelper mDB;
-	private int rInt;
+	private Connection mConnection = null;
+	private PreparedStatement mStatement = null;
+	private ResultSet rSet = null;
+	private DBHelper mDB = null;
+	private int rInt = 0;
+	private User u = null;
 
 	public UserDaoImpl() {
 		mDB = new DBHelper();
 		mConnection = mDB.getConnection();
 		rSet = null;
+		u = null;
+	}
+
+	public UserDaoImpl(User u) {
+		mDB = new DBHelper();
+		mConnection = mDB.getConnection();
+		rSet = null;
+		this.u = u;
 	}
 
 	// SQLException第二个非运行时异常
@@ -32,12 +41,11 @@ public class UserDaoImpl implements UserDao {
 		String sql = "select * from dvd_user where user_Account = ?";
 		// 通过连接获取PreparedStatement对象
 		mStatement = mConnection.prepareStatement(sql);
-
 		// 通过PreparedStatement对象给占位符做赋值操作
 		mStatement.setString(1, userAccount);
-
 		// 通过Statement对象调用方法执行SQL查询语句,并获取结果集对象
 		// executeQuery-查询专用,返回resultSet
+		// executeUpdate-增删改使用,返回int
 		rSet = mStatement.executeQuery();
 		/*
 		 * 如果查得到,结果集中有数据,否则结果集为null
@@ -56,7 +64,6 @@ public class UserDaoImpl implements UserDao {
 			u.setUserStatus(rSet.getInt("USER_STATUS"));
 			System.out.println(u);
 		}
-
 		return u;
 	}
 
@@ -119,16 +126,17 @@ public class UserDaoImpl implements UserDao {
 
 	@Override
 	public boolean returnDVD(int returnDVDId) throws SQLException {
-		String sql = "update dvd_dvd set dvd_status=0 where (dvd_id=? and dvd_status=1)";
+		String sql = "update dvd_lr set lr_status=1 where (dvd_id=? and user_id=? and lr_status=0)";
 		mStatement = mConnection.prepareStatement(sql);
 		mStatement.setInt(1, returnDVDId);
+		mStatement.setInt(2, u.getUserId());
 		rInt = mStatement.executeUpdate();
 		if (rInt > 0) {
-			sql = "update dvd_lr set lr_status=1 where (dvd_id=? and lr_status=0)";
-			mStatement = mConnection.prepareStatement(sql);
-			mStatement.setInt(1, returnDVDId);
-			rInt = mStatement.executeUpdate();
 			if (rInt > 0) {
+				sql = "update dvd_dvd set dvd_status=0 where (dvd_id=? and dvd_status=1)";
+				mStatement = mConnection.prepareStatement(sql);
+				mStatement.setInt(1, returnDVDId);
+				rInt = mStatement.executeUpdate();
 				return true;
 			}
 		}

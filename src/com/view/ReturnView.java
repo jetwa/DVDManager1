@@ -13,7 +13,7 @@ public class ReturnView extends View {
 
 	public ReturnView(User u) {
 		this.nowUser = u;
-		ub = new UserBizImpl();
+		ub = new UserBizImpl(u);
 	}
 
 	@Override

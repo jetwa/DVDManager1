@@ -11,7 +11,7 @@ public class LendView extends View {
 	private User u = null;
 
 	public LendView(User u) {
-		ub = new UserBizImpl();
+		ub = new UserBizImpl(u);
 		this.u = u;
 	}
 

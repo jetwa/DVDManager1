@@ -11,12 +11,17 @@ import com.daoImpl.UserDaoImpl;
 
 public class UserBizImpl implements UserBiz {
 
-	UserDao ud;
-	User u;
+	private UserDao ud = null;
+	private User u = null;
 
 	public UserBizImpl() {
 		ud = new UserDaoImpl();
 		u = null;
+	}
+
+	public UserBizImpl(User u) {
+		ud = new UserDaoImpl(u);
+		this.u = u;
 	}
 
 	@Override
@@ -72,7 +77,7 @@ public class UserBizImpl implements UserBiz {
 
 	@Override
 	public boolean lendDVD(int lendDVDId, User nowUser) {
-		if (lendDVDId > 0) {
+		if (lendDVDId > 0 && u != null) {
 			try {
 				return ud.lendDVD(lendDVDId, nowUser);
 			} catch (SQLException e) {
@@ -85,7 +90,7 @@ public class UserBizImpl implements UserBiz {
 
 	@Override
 	public boolean returnDVD(int returnDVDId) {
-		if (returnDVDId > 0) {
+		if (returnDVDId > 0 && u != null) {
 			try {
 				return ud.returnDVD(returnDVDId);
 			} catch (SQLException e) {
